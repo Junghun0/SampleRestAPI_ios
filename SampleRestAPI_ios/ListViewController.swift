@@ -11,26 +11,37 @@ import UIKit
 
 class ListViewController : UITableViewController{
     
-    //튜플 아이템으로 구성된 데이터 세트
-    var dataset = [
-        ("다크 나이트","영웅물에 철학에 음악까지 더해져 예술이 되다.","2008-09-04", 8.95 ),
-        ("호우시절","때를 알고 내리는 좋은 비","2009-10-08",7.31),
-        ("말할 수 없는 비밀","여기서 너까지 다섯 걸음","2015-05-07",9.19)
-    ]
-    
     lazy var list: [MovieVO] = {
         var datalist = [MovieVO]()
-        for(title , desc , opendate , rating) in self.dataset{
-            let mvo = MovieVO()
-            mvo.title = title
-            mvo.description = desc
-            mvo.opendate = opendate
-            mvo.rating = rating
-            
-            datalist.append(mvo)
-        }
+//        for(title , desc , opendate , rating) in self.dataset{
+//            let mvo = MovieVO()
+//            mvo.title = title
+//            mvo.description = desc
+//            mvo.opendate = opendate
+//            mvo.rating = rating
+//
+//            datalist.append(mvo)
+//        }
         return datalist
     }()
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = self.list[indexPath.row]
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell") as! MovieCell
+        
+        cell.title?.text = row.title
+        cell.desc?.text = row.description
+        cell.opendate?.text = row.opendate
+        cell.rating?.text = "\(row.rating!)"
+        
+        cell.thumbnail.image = UIImage(named: row.thumbnail!)
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.list.count
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +55,8 @@ class ListViewController : UITableViewController{
         let apidata = try! Data(contentsOf: apiURI)
         
         //3. 데이터 전송 결과를 로그로 출력(반드시 필요한 코드는 아님)
-        let log = NSString(data: apidata, encoding: String.Encoding.utf8.rawValue) ?? ""; NSLog("API Result = \(log)")
+        let log = NSString(data: apidata, encoding: String.Encoding.utf8.rawValue) ?? "데이터 없음"
+        NSLog("API Result = \(log)")
         
         //4. JSON 객체를 파싱하여 NSDictionary 객체로 받음
         do{
@@ -75,6 +87,4 @@ class ListViewController : UITableViewController{
             }
         }catch{}
     }
-    
-    
 }
