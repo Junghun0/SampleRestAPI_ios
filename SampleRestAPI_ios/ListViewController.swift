@@ -13,15 +13,6 @@ class ListViewController : UITableViewController{
     
     lazy var list: [MovieVO] = {
         var datalist = [MovieVO]()
-//        for(title , desc , opendate , rating) in self.dataset{
-//            let mvo = MovieVO()
-//            mvo.title = title
-//            mvo.description = desc
-//            mvo.opendate = opendate
-//            mvo.rating = rating
-//
-//            datalist.append(mvo)
-//        }
         return datalist
     }()
     
@@ -41,6 +32,10 @@ class ListViewController : UITableViewController{
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.list.count
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
     }
     
     override func viewDidLoad() {
